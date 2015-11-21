@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AndroidBloodProgressView</string>
+    <string name="DemoValueLabel">Value: %1$d %%</string>
+</resources>
