@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         DemoBloodProgressView3 = (BloodProgressView) findViewById(R.id.DemoBloodView3);
         DemoBloodProgressView4 = (BloodProgressView) findViewById(R.id.DemoBloodView4);
 
+        // DrawVisible
+        //DemoBloodProgressView4.setXAxisDrawVisible(false);
+        //DemoBloodProgressView4.setYAxisDrawVisible(false);
+        //DemoBloodProgressView4.setIndicatorDrawVisible(false);
+
         // Enable Color Animation.
         DemoBloodProgressView2.setColorToBlood(true);
         DemoBloodProgressView4.setColorToBlood(true);

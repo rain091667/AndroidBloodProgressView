@@ -10,6 +10,6 @@ Add the dependency to your build.gradle
 
 ```
 dependencies {
-    compile 'com.github.rain091667:bloodprogressviewlib:1.0.0'
+    compile 'com.github.rain091667:bloodprogressviewlib:1.0.1'
 }
 ```

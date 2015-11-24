@@ -14,6 +14,10 @@ public class BloodProgressView extends View {
     private float View_Height;
     private float View_Width;
 
+    private boolean XAxisDrawVisible;
+    private boolean YAxisDrawVisible;
+    private boolean IndicatorDrawVisible;
+
     private Paint XYAxisLabelLinePaint;
     private Paint RectProgressPaint;
     private Paint ValueIndicatorPaint;
@@ -73,6 +77,9 @@ public class BloodProgressView extends View {
         ValueAnimation = null;
 
         Flag_ColorToBlood = false;
+        XAxisDrawVisible = true;
+        YAxisDrawVisible = true;
+        IndicatorDrawVisible = true;
     }
 
     /**
@@ -139,7 +146,31 @@ public class BloodProgressView extends View {
      * @param Flag Enable Animation True or False.
      */
     public void setColorToBlood(boolean Flag) {
-        Flag_ColorToBlood = Flag;
+        this.Flag_ColorToBlood = Flag;
+    }
+
+    /**
+     * Set Blood Progress View X Axis Label Visible.
+     * @param Flag Visible true or false. Default: true.
+     */
+    public void setXAxisDrawVisible(boolean Flag) {
+        this.XAxisDrawVisible = Flag;
+    }
+
+    /**
+     * Set Blood Progress View Y Axis Label Visible.
+     * @param Flag Visible true or false. Default: true.
+     */
+    public void setYAxisDrawVisible(boolean Flag) {
+        this.YAxisDrawVisible = Flag;
+    }
+
+    /**
+     * Set Blood Progress View Indicator Visible.
+     * @param Flag Visible true or false. Default: true.
+     */
+    public void setIndicatorDrawVisible(boolean Flag) {
+        this.IndicatorDrawVisible = Flag;
     }
 
     private void setPercentValue(int PercentValue) {
@@ -208,18 +239,19 @@ public class BloodProgressView extends View {
         super.onDraw(canvas);
         XYAxisLabelLinePaint.setColor(ProgressXYAxisLabelLineColor);
         XYAxisLabelLinePaint.setAlpha(ProgressXYAxisLabelLineColor_alpha);
-
-        canvas.drawLine(CutValue, 0, CutValue, View_Height, XYAxisLabelLinePaint);
-        canvas.drawLine(0, View_Height - CutValue, View_Width, View_Height - CutValue, XYAxisLabelLinePaint);
-
-        Y_Range = (View_Height - 2*CutValue)/4;
-        CurrentIndex = CutValue;
-        for(int i=0;i<4;i++) {
-            canvas.drawLine(CutValue, CurrentIndex, 2 * CutValue, CurrentIndex, XYAxisLabelLinePaint);
-            CurrentIndex += Y_Range;
+        if(XAxisDrawVisible)
+            canvas.drawLine(0, View_Height - CutValue, View_Width, View_Height - CutValue, XYAxisLabelLinePaint);
+        if(YAxisDrawVisible) {
+            canvas.drawLine(CutValue, 0, CutValue, View_Height, XYAxisLabelLinePaint);
+            Y_Range = (View_Height - 2*CutValue)/4;
+            CurrentIndex = CutValue;
+            for(int i=0;i<4;i++) {
+                canvas.drawLine(CutValue, CurrentIndex, 2 * CutValue, CurrentIndex, XYAxisLabelLinePaint);
+                CurrentIndex += Y_Range;
+            }
         }
 
-        Rect_Left = (int)(4*CutValue + CutValue/2);
+        Rect_Left = (int)(4 * CutValue + CutValue / 2);
         Rect_Right = (int)(8*CutValue + CutValue/2);
         Rect_Bottom = (int)(View_Height-CutValue-2);
         Rect_Top = (int)(CutValue + (View_Height - 2*CutValue)*(1 - PercentValue/100));
@@ -239,7 +271,7 @@ public class BloodProgressView extends View {
             }
             else if(0 <= PercentValue && PercentValue <= 50) {
                 ColorTurnIndex = (int)PercentValue*5;
-                if(ColorTurnIndex > 255) ColorTurnIndex = 255;
+                if (ColorTurnIndex > 255) ColorTurnIndex = 255;
                 else if(ColorTurnIndex < 0) ColorTurnIndex = 0;
                 RectProgressPaint.setARGB(255, 255, ColorTurnIndex, 0);
             }
@@ -249,13 +281,15 @@ public class BloodProgressView extends View {
         canvas.drawRect(BloodProgressRect, RectProgressPaint);
 
         if(PercentValue > 0) {
-            ValueIndicatorPaint.setColor(ProgressIndicatorColor);
-            ValueIndicatorPaint.setAlpha(ProgressIndicatorColor_alpha);
-            Indicator_Left = (int)(3*CutValue - CutValue/2);
-            Indicator_Right = (int)(Rect_Right + CutValue);
-            canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Right, Rect_Top, ValueIndicatorPaint);
-            canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Left + CutValue, Rect_Top - CutValue / 2, ValueIndicatorPaint);
-            canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Left + CutValue, Rect_Top + CutValue / 2, ValueIndicatorPaint);
+            if(IndicatorDrawVisible) {
+                ValueIndicatorPaint.setColor(ProgressIndicatorColor);
+                ValueIndicatorPaint.setAlpha(ProgressIndicatorColor_alpha);
+                Indicator_Left = (int) (3 * CutValue - CutValue / 2);
+                Indicator_Right = (int) (Rect_Right + CutValue);
+                canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Right, Rect_Top, ValueIndicatorPaint);
+                canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Left + CutValue, Rect_Top - CutValue / 2, ValueIndicatorPaint);
+                canvas.drawLine(Indicator_Left, Rect_Top, Indicator_Left + CutValue, Rect_Top + CutValue / 2, ValueIndicatorPaint);
+            }
         }
     }
 }
